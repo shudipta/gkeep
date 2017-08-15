@@ -1,0 +1,69 @@
+
+	<div class="container">
+		<div class="col-md-12">
+			<h1 class="margin-bottom-15">
+			<?php
+				echo ($_SESSION['edit'] == "0" ? "Add New Note or List" : "Edit note");
+			?>
+			</h1>
+			
+			<form class="form-horizontal templatemo-container templatemo-login-form-1 margin-bottom-30" role="form" action="<?php 
+							echo $action;
+						?>" method="post">
+				
+				<div class="form-group" style="padding-right: 15px;">
+					<button class="btn" id="add_list" style="background-color: #FBFBFB;">
+						<i class="fa fa-list" style="font-size: 30px;" ></i>
+					</button>
+					<?php
+						if($_SESSION["edit"] == "1") {
+							echo '<input type="hidden" name="id_note" value="' . $id_note . '">';
+							echo '<input type="submit" formaction="delete_action.php" class="btn btn-danger" style="float: right;" value="Delete" >';
+						}
+					?>
+				</div>
+				
+		        <div class="form-group">
+					<div class="col-md-2">
+						<label for="title" class="control-label" style="padding-top: 7px;">Title</label>
+					</div>
+					<div class="col-md-10">
+						<input type="text" class="form-control" name="title" id="title" placeholder="Title" value="<?php 
+							// if(isset($_SESSION['edit']))
+								echo $title;
+						?>"/>
+					</div>
+				</div>
+		        
+				<div class="form-group">
+					<div class="col-md-2">
+						<label for="content" class="control-label" style="padding-top: 7px;">Content</label>
+					</div>
+					<div class="col-md-10">
+						<textarea class="form-control" rows="5" name="content" id="content" placeholder="Content" ><?php
+							// if(isset($_SESSION['edit']))
+								echo $content;
+						?></textarea>
+					</div>
+		        </div>
+				
+		        <div class="form-group">
+					<div class="col-md-2">
+						<label for="dtime" class="control-label" style="padding-top: 7px;">Alarm Date & Time</label>
+					</div>
+					<div class="col-md-10">
+						<input type="datetime-local", class="form-control", name="dtime" id="dtime" value="<?php
+							// if(isset($_SESSION['edit']))
+								echo $alarm_date;
+						?>">
+					</div>
+		        </div>
+				
+				<div class="form-group" style="padding-right: 15px;">
+					<input type="submit" class="btn btn-info" style="float: right;" value="<?php
+						echo ($_SESSION['edit'] == "0" ? "Add" : "Edit");
+					?>" >
+				</div>
+		    </form>
+		</div>
+	</div>

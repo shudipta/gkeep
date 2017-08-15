@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+<div id="myDIV" class="header">
+  <input type="text" id="myInput" placeholder="Title...">
+  <span onclick="newElement()" class="addBtn">Add</span>
+</div>
+  <hr />
+<form>
+<ul id="myUL">
+  <li id="10"><input type="text" name="name" value="Hit the gym"></li>
+  <li id="20"><input type="text" name="name" value="Pay bills"></li>
+  <li id="30"><input type="text" name="name" value="Meet George"></li>
+  <li id="40"><input type="text" name="name" value="Buy eggs"></li>
+  <li id="50"><input type="text" name="name" value="Read a book"></li>
+  <li id="60"><input type="text" name="name" value="Organize office"></li>
+</ul>
+<input type="submit" class="btn btn-info" style="float: right;" value="Add" onclick="getData()">
+</form>
+
+<script>
+// Create a "close" button and append it to each list item
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+}
+
+// Click on a close button to hide the current list item
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
+}
+
+// Add a "checked" symbol when clicking on a list item
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev) {
+  console.log(ev);
+  //var elm = ev.target;
+  if (ev.target.tagName === 'LI') {
+  	console.log(ev.target);
+    ev.target.classList.toggle('checked');
+    /*var id = ev.target.id;
+    if(ev.target.id%10==0) ev.taid++;
+    else id--;
+    ev.target.id = id;*/
+
+    var source = ev.target || ev.srcElement;
+            console.log(source);
+    var t1 = ev.target.getElementsByTagName("input");
+    console.log(t1[0]);
+    t1[0].classList.toggle('checked');
+    //t1[0].value = ev.target.id;
+            //alert('asdf');
+    //t1.setAttribute('text-decoration', "line-through");
+    //t1.style.textDecoration="line-through";
+    
+  }
+}, false);
+
+// Create a new list item when clicking on the "Add" button
+
+  function setAttributes(el, attrs) {
+    for(var key in attrs) {
+      el.setAttribute(key, attrs[key]);
+    }
+  }
+
+function newElement() {
+  var ul = document.getElementById("myUL");
+  var li = document.createElement("li");
+  var t1 = document.createElement("input");
+  var inputValue = document.getElementById("myInput").value;
+  setAttributes(t1, {'type': 'text',
+  					'name': 'name',
+  					'value': inputValue});
+  // var t = document.createTextNode(inputValue);
+  li.appendChild(t1);
+  
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+    ul.insertBefore(li, ul.firstChild);
+  }
+  document.getElementById("myInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+}
+
+function getData() {
+  var names1 = document.getElementsByName("name");
+  var dataString = '';
+  var cnt = 0;
+  for(i = 0; i < names1.length; i++) {
+  	var par = names1[i].parentElement;
+    if(par.style.display == "none")
+    	;
+    else {
+      if(cnt>0) {
+      	dataString += '&';
+      }
+      //names.push(names1[i].value);
+      dataString += 'item[' + cnt + '][name]=' + names1[i].value;
+      dataString += '&item[' + cnt + '][status]=' + (par.classList == "checked");
+      	
+      console.log(names1[i].value + ' ');
+      cnt++;
+    }
+  }
+  console.log(dataString);
+  
+  var name = document.getElementById("name").value;
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+  var contact = document.getElementById("contact").value;
+  // Returns successful data submission message when the entered information is stored in database.
+  var dataString = 'name1=' + name + '&email1=' + email + '&password1=' + password + '&contact1=' + contact;
+  if (name == '' || email == '' || password == '' || contact == '') {
+  	alert("Please Fill All Fields");
+  } else {
+    // AJAX code to submit form.
+    $.ajax({
+      type: "POST",
+      url: "add_list_action.php",
+      data: dataString,
+      cache: false,
+      success: function(html) {
+          alert(html);
+      }
+    });
+  }
+  return false;
+}
+</script>
+
+</body>
+</html>
